@@ -6,10 +6,14 @@
     "contact" : { },
     "version" : "2.0.0"
   },
+  "servers" : [ {
+    "url" : "https://ohvnaf9.us.api-mocks.com",
+    "description" : "This is your API mock endpoint. When called, it will simulate the behavior of your API."
+  } ],
   "paths" : {
     "/contacts/" : {
       "get" : {
-        "tags" : [ "Contacts" ],
+        "tags" : [ "Contacts", "supported" ],
         "summary" : "Get the list of Contacts",
         "description" : "Loads a list of Contact test",
         "parameters" : [ {
