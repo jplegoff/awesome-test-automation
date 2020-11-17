@@ -11,7 +11,7 @@
       "get" : {
         "tags" : [ "Contacts" ],
         "summary" : "Get the list of Contacts",
-        "description" : "Loads a list of Contact",
+        "description" : "Loads a list of Contact test",
         "parameters" : [ {
           "$ref" : "#/components/parameters/%24size"
         }, {
