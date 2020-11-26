@@ -13,7 +13,7 @@
   "paths" : {
     "/contacts/" : {
       "get" : {
-        "tags" : [ "Contacts", "supported" ],
+        "tags" : [ "Contacts", "supported", "private" ],
         "summary" : "Get the list of Contacts",
         "description" : "Loads a list of Contact test",
         "parameters" : [ {
@@ -91,7 +91,10 @@
           "400" : {
             "$ref" : "#/components/responses/Status%20400"
           }
-        }
+        },
+        "security" : [ { }, {
+          "HTTP_BASIC" : [ ]
+        } ]
       },
       "post" : {
         "tags" : [ "Contacts" ],
@@ -123,6 +126,9 @@
         "security" : [ {
           "HTTP_BASIC" : [ ]
         } ]
+      },
+      "x-talend" : {
+        "section" : "Contacts"
       }
     },
     "/contacts/{contactid}" : {
@@ -193,7 +199,10 @@
       },
       "parameters" : [ {
         "$ref" : "#/components/parameters/contactid"
-      } ]
+      } ],
+      "x-talend" : {
+        "section" : "Contacts"
+      }
     },
     "/companies/" : {
       "get" : {
@@ -240,8 +249,7 @@
                   "items" : {
                     "$ref" : "#/components/schemas/Company"
                   }
-                },
-                "example" : "[{\n  \"id\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\",\n  \"name\": \"George Street Brewery\",\n  \"address\":{\n    \"street\": \"2 place de la Defense\",\n    \"zipcode\": \"92053\",\n    \"city\": \"Paris\"\n  },\n  \"tags\":[\n    \"brewery\",\n    \"beer\",\n    \"ale\"\n  ]\n}]"
+                }
               }
             }
           },
@@ -280,6 +288,9 @@
         "security" : [ {
           "HTTP_BASIC" : [ ]
         } ]
+      },
+      "x-talend" : {
+        "section" : "Companies"
       }
     },
     "/companies/{companyid}" : {
@@ -350,7 +361,10 @@
       },
       "parameters" : [ {
         "$ref" : "#/components/parameters/companyid"
-      } ]
+      } ],
+      "x-talend" : {
+        "section" : "Companies"
+      }
     }
   },
   "components" : {
@@ -374,7 +388,10 @@
             "example" : "Bad Request"
           }
         },
-        "example" : "{\n  \"code\": 400,\n  \"description\": \"Bad query parameter [$size]: Invalid integer value [abc]\",\n  \"reasonPhrase\": \"Bad Request\"\n}"
+        "example" : "{\n  \"code\": 400,\n  \"description\": \"Bad query parameter [$size]: Invalid integer value [abc]\",\n  \"reasonPhrase\": \"Bad Request\"\n}",
+        "x-talend" : {
+          "section" : "General"
+        }
       },
       "Contact" : {
         "type" : "object",
@@ -416,7 +433,10 @@
             "example" : "0e8c9fb0-ad98-11e6-bf2e-47644ada7c0f"
           }
         },
-        "example" : "{\n  \"id\": \"0e8dd830-ad98-11e6-bf2e-47644ada7c0f\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"birthday\": 152755200000,\n  \"active\": true,\n  \"rank\": 1,\n  \"company\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\"\n}"
+        "example" : "{\n  \"id\": \"0e8dd830-ad98-11e6-bf2e-47644ada7c0f\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"birthday\": 152755200000,\n  \"active\": true,\n  \"rank\": 1,\n  \"company\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\"\n}",
+        "x-talend" : {
+          "section" : "Contacts"
+        }
       },
       "Company" : {
         "type" : "object",
@@ -425,7 +445,8 @@
         "properties" : {
           "id" : {
             "type" : "string",
-            "description" : "Auto-generated primary key field"
+            "description" : "Auto-generated primary key field",
+            "example" : "ewkfbweifjewfijbwei"
           },
           "name" : {
             "type" : "string"
@@ -455,7 +476,9 @@
             }
           }
         },
-        "example" : "{\n  \"id\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\",\n  \"name\": \"George Street Brewery\",\n  \"address\":{\n    \"street\": \"2 place de la Defense\",\n    \"zipcode\": \"92053\",\n    \"city\": \"Paris\"\n  },\n  \"tags\":[\n    \"brewery\",\n    \"beer\",\n    \"ale\"\n  ]\n}"
+        "x-talend" : {
+          "section" : "Companies"
+        }
       }
     },
     "responses" : {
@@ -587,6 +610,32 @@
         "type" : "http",
         "scheme" : "basic",
         "description" : "All GET methods are public, meaning that *you can read all the data*. Write operations require authentication and therefore are forbidden to the general public."
+      }
+    }
+  },
+  "x-talend" : {
+    "sections" : {
+      "General" : { },
+      "Contacts" : {
+        "description" : ""
+      },
+      "Companies" : { }
+    },
+    "texts" : {
+      "672a7748-e9e3-45f9-96f5-3599aaf007d0" : {
+        "title" : "Authentication",
+        "content" : "This API is secured using Basic Authentication.\n\nAll **read operations are open** and don't require authentication. However, all **write operations require authentication**.",
+        "section" : "General"
+      },
+      "e5ee73cf-279f-4292-a68f-b219f5bf5a49" : {
+        "title" : "Error handling",
+        "content" : "This API uses standard HTTP status codes to indicate the status of a response.\n\nThere are two main categories of error responses. Each have a different response payload structure.\n\n* Simple errors\n* Detailed errors\n\n\n# Simple errors\n\n| Name | Code | Description |\n| -------- | -------- | -------- |\n| Bad request     | 400     | The request was unacceptable     |\n| Unauthorized     | 401     | The request has not been applied because it lacks valid authentication credentials for the target resource.     |\n| Forbidden     | 403     | The server understood the request, but is refusing to fulfill it     |\n| Not Found     | 404     | The server has not found anything matching the request URI     |\n| Not acceptable     | 406     | The server is unable to return a response in the format that was requested by the client     |\n| Unsupported Media Type     | 415     | The server is refusing to service the request because the entity of the request is in a format not supported by the requested resource for the requested method     |\n| Too many requests     | 429     | Too many requests hit the API too quickly     |\n| Server error     | 500     | A technical error occured  |\n\n\n\n\n\n\n# Detailed errors\n| Name | Code | Description |\n| -------- | -------- | -------- |\n| Unprocessable entity     | 422     | The server understands the content type of the request entity, and the syntax of the request entity is correct, but was unable to process the contained instructions.     |\n\n\n\n\n",
+        "section" : "General"
+      },
+      "b13b9fad-34c7-444f-9da0-6a8b9791be47" : {
+        "title" : "How to",
+        "content" : "svkvmsdkmvsdlkm",
+        "section" : "General"
       }
     }
   }
